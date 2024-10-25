@@ -1,0 +1,102 @@
+package application;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Calc {
+	
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // choix entre afffichage graphique ou console
+        System.out.println("Choisissez votre mode de calculatrice : ");
+        System.out.println("1 - Console");
+        System.out.println("2 - Graphique");
+        String choix = scanner.nextLine();
+
+        if (choix.equals("1")) {
+            // Console
+            launchConsoleMode();
+        } else if (choix.equals("2")) {
+            // Affichage graphique
+            launchJavaFXMode();
+        } else {
+            System.out.println("Choix invalide, veuillez relancer le programme.");
+        }
+
+        scanner.close();
+    }
+    
+    // Affichage console
+	private static void launchConsoleMode() {
+        CalculatorModel model = new CalculatorModel();
+        CalculatorController controller = new CalculatorController(model);
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Calculatrice de Sami et Gaspard");
+        while (true) {
+            System.out.print("Entrez une commande (push, +, -, *, /, clear, drop, swap, quit): ");
+            String input = scanner.next();
+
+            try {
+                switch (input) {
+                    case "push":
+                        double value = 0;
+                        boolean validInput = false;
+
+                        // On check qu'on rentre bien un nb
+                        while (!validInput) {
+                            System.out.print("Entrez un nombre : ");
+                            try {
+                                value = scanner.nextDouble();
+                                validInput = true;  //C'est un nb -> on sort
+                            } catch (InputMismatchException e) {
+                                System.out.println("Erreur : vous devez entrer un nombre valide.");
+                                scanner.next(); //C'est pas un nb on retente
+                            }
+                        }
+                        controller.handlePush(value);
+                        break;
+                    case "+":
+                        controller.handleAdd();
+                        break;
+                    case "-":
+                        controller.handleSubtract();
+                        break;
+                    case "*":
+                        controller.handleMultiply();
+                        break;
+                    case "/":
+                        controller.handleDivide();
+                        break;
+                    case "clear":
+                        controller.handleClear();
+                        break;
+                    case "drop":
+                        controller.handleDrop();
+                        break;
+                    case "swap":
+                        controller.handleSwap();
+                        break;
+                    case "quit":
+                        scanner.close();
+                        return;
+                    default:
+                        System.out.println("Commande inconnue.");
+                }
+            } catch (IllegalStateException e) {
+                // Pas assez de nb dans la liste
+                System.out.println("Erreur : " + e.getMessage());
+			} catch (ArithmeticException e) {
+                // Division par 0 
+                System.out.println("Erreur : " + e.getMessage());
+            }
+        } 
+    }
+
+	// Affichage graphique
+	private static void launchJavaFXMode() {
+	    CalculatorView.launch(CalculatorView.class);
+	}
+}
+
