@@ -19,7 +19,7 @@ public class CalculatorView extends Application {
 
     private CalculatorController controller;
     private TextArea stackDisplay;  // Zone pour l'historique
-    private TextField previewField; // Zone de previsu
+    private TextField previewField; // Zone de prévisualisation
     private List<String> lastFiveStacks; // On stock les 5 dernières piles
     private StringBuilder currentInput = new StringBuilder(); 
 
@@ -116,6 +116,13 @@ public class CalculatorView extends Application {
         zeroButton.setPrefWidth(40);
         zeroButton.setOnAction(e -> appendToCurrentInput(0));
         numberGrid.add(zeroButton, 1, 3);
+
+        // Ajout du bouton +/- pour inverser le signe
+        Button toggleSignButton = new Button("+/-");
+        toggleSignButton.setPrefWidth(40);
+        toggleSignButton.setOnAction(e -> toggleSign());
+        numberGrid.add(toggleSignButton, 2, 3); // Ajout du bouton à la droite du bouton 0
+
         numberGrid.setAlignment(Pos.CENTER_RIGHT); // Le nb sont a droite
 
         // Ajouter les grilles dans le HBox
@@ -127,7 +134,7 @@ public class CalculatorView extends Application {
         // Boutton Quitter
         Button quitButton = new Button("Quitter");
         quitButton.setPrefWidth(400);
-        quitButton.setStyle("-fx-background-color: red; -fx-text-fill: white;"); //Bouton en rouge
+        quitButton.setStyle("-fx-background-color: red; -fx-text-fill: white;"); // Bouton en rouge
         quitButton.setOnAction(e -> primaryStage.close());
         mainVBox.getChildren().add(quitButton);
 
@@ -141,6 +148,21 @@ public class CalculatorView extends Application {
     private void appendToCurrentInput(int digit) {
         currentInput.append(digit);
         previewField.setText(currentInput.toString());
+    }
+
+    // Fonction pour inverser le signe du nombre courant
+    private void toggleSign() {
+        if (currentInput.length() > 0) {
+            try {
+                double value = Double.parseDouble(currentInput.toString());
+                value = -value; // Inverser le signe
+                currentInput.setLength(0); // Réinitialiser l'entrée actuelle
+                currentInput.append(value); // Mettre la valeur inversée
+                previewField.setText(currentInput.toString()); // Mettre à jour le champ de prévisualisation
+            } catch (NumberFormatException e) {
+                stackDisplay.setText("Erreur : Entrez un nombre valide.");
+            }
+        }
     }
 
     // Gestion du Push 
@@ -192,7 +214,7 @@ public class CalculatorView extends Application {
         }
     }
 
- // Gestion affichage de historique + pile actuelle
+    // Gestion affichage de l'historique + pile actuelle
     private void updateStackDisplay() {
         // Afficher uniquement la pile actuelle sans l'inclure dans l'historique
         StringBuilder displayText = new StringBuilder();
@@ -201,7 +223,7 @@ public class CalculatorView extends Application {
         // Ajouter la pile actuelle à l'historique uniquement si elle est différente de la dernière pile historique
         String currentStack = controller.getModel().getStack().toString();
         if (lastFiveStacks.isEmpty() || !lastFiveStacks.get(lastFiveStacks.size() - 1).equals(currentStack)) {
-            if (lastFiveStacks.size() == 6) { //On garde 6 element car on affiche pas l'element actuel
+            if (lastFiveStacks.size() == 6) { // On garde 6 éléments car on affiche pas l'élément actuel
                 lastFiveStacks.remove(0);  
             }
             lastFiveStacks.add(currentStack);  // Ajouter la pile précédente à la fin
