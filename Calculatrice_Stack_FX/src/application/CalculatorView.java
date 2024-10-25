@@ -132,7 +132,7 @@ public class CalculatorView extends Application {
         mainVBox.getChildren().add(quitButton);
 
         // Créer la scène avec le VBox principal
-        Scene scene = new Scene(mainVBox, 400, 500);
+        Scene scene = new Scene(mainVBox, 400, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
