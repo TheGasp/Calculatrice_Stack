@@ -8,23 +8,27 @@ public class Calc {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // choix entre afffichage graphique ou console
-        System.out.println("Choisissez votre mode de calculatrice : ");
-        System.out.println("1 - Console");
-        System.out.println("2 - Graphique");
-        String choix = scanner.nextLine();
-
-        if (choix.equals("1")) {
-            // Console
-            launchConsoleMode();
-        } else if (choix.equals("2")) {
-            // Affichage graphique
-            launchJavaFXMode();
-        } else {
-            System.out.println("Choix invalide, veuillez relancer le programme.");
-        }
-
-        scanner.close();
+	    //choix entre afffichage graphique ou console (while -> force a faire un choix valide)
+	    while (true) {
+	        System.out.println("Choisissez votre mode de calculatrice : ");
+	        System.out.println("1 - Console");
+	        System.out.println("2 - Graphique");
+	        String choix = scanner.nextLine();
+	
+	        if (choix.equals("1")) {
+	            // Console
+	            launchConsoleMode();
+	            break;
+	        } else if (choix.equals("2")) {
+	            // Affichage graphique
+	            launchJavaFXMode();
+	            break;
+	        } else {
+	            System.out.println("Choix invalide");
+	        }
+	    }
+	
+	    scanner.close();
     }
     
     // Affichage console
