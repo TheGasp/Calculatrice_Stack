@@ -1,4 +1,4 @@
-package application;
+package Calculatrice;
 
 import java.util.Stack;
 
@@ -73,7 +73,7 @@ public class CalculatorModel {
         stack.pop();
     }
 
-    // Swap
+    // Swap (des deux denières valeurs)
     public void swap() {
         checkStackSize(2);
         double top1 = pop();

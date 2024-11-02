@@ -1,8 +1,8 @@
-package application;
+package Calculatrice;
 
 public class CalculatorController {
     private CalculatorModel model;
-    //Ici on controle les actions que doivent effectuer chaque handleur
+    //Gestion des actions pour chaque handleur
 
     public CalculatorController(CalculatorModel model) {
         this.model = model;
@@ -48,12 +48,12 @@ public class CalculatorController {
         displayStack();
     }
 
-    // Affichage
+    // Affichage (en mode console)
     private void displayStack() {
         System.out.println("Pile actuelle : " + model.getStack());
     }
 
-    // Utile pour le main
+    // Getteur du model
     public CalculatorModel getModel() {
         return model;
     }

@@ -1,4 +1,4 @@
-package application;
+package Calculatrice;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -8,9 +8,9 @@ public class Calc {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-	    //choix entre afffichage graphique ou console (while -> force a faire un choix valide)
+	    //choix entre afffichage graphique ou console (while -> force a faire un choix valide) 
 	    while (true) {
-	        System.out.println("Choisissez votre mode de calculatrice : ");
+	        System.out.println("Choisissez votre mode : ");
 	        System.out.println("1 - Console");
 	        System.out.println("2 - Graphique");
 	        String choix = scanner.nextLine();
