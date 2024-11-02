@@ -2,6 +2,7 @@ package Calculatrice;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Locale;
 
 public class Calc {
 	
@@ -33,14 +34,15 @@ public class Calc {
     
     // Affichage console
 	private static void launchConsoleMode() {
-        CalculatorModel model = new CalculatorModel();
-        CalculatorController controller = new CalculatorController(model);
+        CalcModel model = new CalcModel();
+        CalcController controller = new CalcController(model);
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Calculatrice de Sami et Gaspard");
         while (true) {
             System.out.print("Entrez une commande (push, +, -, *, /, clear, drop, swap, quit): ");
             String input = scanner.next();
+            scanner.useLocale(Locale.US); // On pose ca pour utiliser le point a la place de la virgule (homogénise le tout)
 
             try {
                 switch (input) {
@@ -100,7 +102,7 @@ public class Calc {
 
 	// Affichage graphique
 	private static void launchJavaFXMode() {
-	    CalculatorView.launch(CalculatorView.class);
+	    CalcView.launch(CalcView.class);
 	}
 }
 

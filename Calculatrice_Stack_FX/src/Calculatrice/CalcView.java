@@ -15,9 +15,9 @@ import javafx.stage.Stage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CalculatorView extends Application {
+public class CalcView extends Application {
 
- private CalculatorController controller;
+ private CalcController controller;
  private TextArea stackDisplay;  // Zone pour l'historique (plusieurs lignes)
  private TextField previewField; // Utile pour prévisualisation (une seul ligne) 
  private List<String> lastFiveStacks; // On stock les 5 dernières piles
@@ -25,8 +25,8 @@ public class CalculatorView extends Application {
 
  @Override
  public void start(Stage primaryStage) { // primaryStage = fenetre principale
-     CalculatorModel model = new CalculatorModel();
-     controller = new CalculatorController(model);
+     CalcModel model = new CalcModel();
+     controller = new CalcController(model);
      lastFiveStacks = new LinkedList<>(); // mieux qu'une array pour accéeder au premier ou dernier element
 
      primaryStage.setTitle("Calculatrice de Sami et Gaspard");

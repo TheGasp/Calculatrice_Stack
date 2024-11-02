@@ -1,10 +1,10 @@
 package Calculatrice;
 
-public class CalculatorController {
-    private CalculatorModel model;
+public class CalcController {
+    private CalcModel model;
     //Gestion des actions pour chaque handleur
 
-    public CalculatorController(CalculatorModel model) {
+    public CalcController(CalcModel model) {
         this.model = model;
     }
 
@@ -54,7 +54,7 @@ public class CalculatorController {
     }
 
     // Getteur du model
-    public CalculatorModel getModel() {
+    public CalcModel getModel() {
         return model;
     }
 }

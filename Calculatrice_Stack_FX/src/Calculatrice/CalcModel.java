@@ -2,10 +2,10 @@ package Calculatrice;
 
 import java.util.Stack;
 
-public class CalculatorModel {
+public class CalcModel {
     private Stack<Double> stack;
 
-    public CalculatorModel() {
+    public CalcModel() {
         stack = new Stack<>(); //On crée une pile
     }
 
