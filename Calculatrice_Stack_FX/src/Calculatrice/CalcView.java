@@ -11,8 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.util.LinkedList;
 import java.util.List;
 
 public class CalcView extends Application {
@@ -20,14 +18,12 @@ public class CalcView extends Application {
  private CalcController controller;
  private TextArea stackDisplay;  // Zone pour l'historique (plusieurs lignes)
  private TextField previewField; // Utile pour prévisualisation (une seul ligne) 
- private List<String> lastFiveStacks; // On stock les 5 dernières piles
  private StringBuilder currentInput = new StringBuilder(); //On stock le nb qu'on est en train de rentrer
 
  @Override
  public void start(Stage primaryStage) { // primaryStage = fenetre principale
      CalcModel model = new CalcModel();
      controller = new CalcController(model);
-     lastFiveStacks = new LinkedList<>(); // mieux qu'une array pour accéeder au premier ou dernier element
 
      primaryStage.setTitle("Calculatrice de Sami et Gaspard");
 
@@ -243,28 +239,26 @@ private void addVirgule() {
      }
  }
 
- // Fonction qui gere le display
- private void updateStackDisplay() {
-     StringBuilder displayText = new StringBuilder();
-     displayText.append("Pile actuelle : ").append(controller.getModel().getStack().toString()).append("\n\n");
+//Fonction qui gère l'affichage
+private void updateStackDisplay() {
+  List<Double> stack = controller.getModel().getStack();
+  StringBuilder displayText = new StringBuilder();
 
-     String currentStack = controller.getModel().getStack().toString();
-     if (lastFiveStacks.isEmpty() || !lastFiveStacks.get(lastFiveStacks.size() - 1).equals(currentStack)) { // On verifie avec equals car on check les valeurs (!= permet de regarder les instances) -> evite de push du vide
-         if (lastFiveStacks.size() == 6) { // Fin a 6 car on affiche pas la pile actuelle dans l'historique
-             lastFiveStacks.remove(0);
-         }
-         lastFiveStacks.add(currentStack);
-     }
+  if (!stack.isEmpty()) {
+      // Nb actuel
+      double lastValue = stack.get(stack.size() - 1);
+      displayText.append("Nombre actuel : ").append(lastValue).append("\n\n");
 
-     if (!lastFiveStacks.isEmpty()) { // C'est pas la premiere stack
-         displayText.append("Historique des 5 dernières piles :\n");
-         for (int i = lastFiveStacks.size() - 2; i >= 0; i--) {
-             displayText.append("Pile ").append(lastFiveStacks.size() - 1 - i).append(" : ").append(lastFiveStacks.get(i)).append("\n");
-         }
-     }
-
-     stackDisplay.setText(displayText.toString());
- }
+      // 5 derniers elements (sans compter le nb actuel)
+      displayText.append("Historique des 5 derniers nombres :\n");
+      int historyStart = Math.max(0, stack.size() - 6); //index de depart
+      for (int i = stack.size() - 2; i >= historyStart; i--) { //stack.size - 1 = indice du remier element
+          displayText.append(stack.get(i)).append("\n");
+      }
+  } 
+  
+  stackDisplay.setText(displayText.toString());
+}
 
  public static void main(String[] args) {
      launch(args);
