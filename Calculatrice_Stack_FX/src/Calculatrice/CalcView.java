@@ -252,10 +252,10 @@ public class CalcView extends Application {
         List<Double> stack = controller.getModel().getStack();
         StringBuilder displayText = new StringBuilder();
 
-        int maxDisplayCount = 7;
-        int displayCount = Math.min(stack.size(), maxDisplayCount); // Nb réel a affiche
+        int maxNb = 7;
+        int displayCount = Math.min(stack.size(), maxNb); // Nb réel a affiche
 
-        for (int i = 0; i < maxDisplayCount - displayCount; i++) { 
+        for (int i = 0; i < maxNb - displayCount; i++) { 
             displayText.append("\n"); // Lignes vide en + pour afficher en bas de l'ecran
         }
 
