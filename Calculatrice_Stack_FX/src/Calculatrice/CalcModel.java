@@ -9,7 +9,7 @@ public class CalcModel {
         stack = new Stack<>(); //On crée une pile
     }
 
-    // Empiler une valeur
+    // Empiler une valeur (encapsulation)
     public void push(double value) {
         stack.push(value);
     }
