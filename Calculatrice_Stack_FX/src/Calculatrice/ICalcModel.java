@@ -13,5 +13,5 @@ public interface ICalcModel {
     void drop();
     void swap();
     Stack<Double> getStack();
-    void setOnStackChanged(Runnable callback); // Observateur pour notifier des changements
+    void setOnPileChanged(Runnable callback); 
 }

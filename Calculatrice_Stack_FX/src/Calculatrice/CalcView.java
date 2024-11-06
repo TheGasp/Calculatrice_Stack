@@ -17,18 +17,18 @@ public class CalcView extends Application implements ICalcView {
     private static ICalcController staticController;
     private ICalcController controller;
     private TextArea stackDisplay;  // Zone pour l'historique (plusieurs lignes)
-    private TextField previewField; // Utile pour prévisualisation (une seule ligne)
+    private TextField previewField; // utile pour prévisualisation (une seule ligne)
     private StringBuilder actuelInput = new StringBuilder(); // On stocke le nombre qu'on est en train de rentrer
 
-    // Méthode pour démarrer l'application avec un contrôleur
+    // Demarage avec un controlleur (on contourne la limite de launch)
     public static void startApplication(ICalcController controller) {
         CalcView.staticController = controller;
         launch();
     }
 
     @Override
-    public void init() {
-        this.controller = staticController;
+    public void init() { //permet que le controlleur soit dispo pour tout le monde
+        this.controller = staticController; 
     }
 
     @Override
@@ -169,9 +169,7 @@ public class CalcView extends Application implements ICalcView {
         primaryStage.show();
     }
 
-    // Méthodes pour gérer l'interface et l'interaction utilisateur
-
-    private void appendToCurrentInput(int digit) {
+    private void appendToCurrentInput(int digit) { //ajout d'un chiffre a la previsu
         actuelInput.append(digit);
         previewField.setText(actuelInput.toString());
     }
@@ -183,7 +181,7 @@ public class CalcView extends Application implements ICalcView {
         }
     }
 
-    private void inverseSigne() {
+    private void inverseSigne() { 
         if (actuelInput.length() > 0) {
             try {
                 double value = Double.parseDouble(actuelInput.toString());
@@ -214,7 +212,7 @@ public class CalcView extends Application implements ICalcView {
                 showErrorInHistory("Entrez un nombre valide.");
                 return;
             }
-            double value = Double.parseDouble(actuelInput.toString());
+            double value = Double.parseDouble(actuelInput.toString()); //necessaire car actuelInput -> StringBuilder
             controller.handlePush(value);
             actuelInput.setLength(0); // Vide le champ
             previewField.clear();
@@ -242,7 +240,7 @@ public class CalcView extends Application implements ICalcView {
     }
 
     @Override
-    public void updateStackDisplay() {
+    public void updateStackDisplay() { //Gestion de l'affichage de l'historique
         List<Double> stack = controller.getModel().getStack();
         StringBuilder displayText = new StringBuilder();
 
@@ -265,16 +263,12 @@ public class CalcView extends Application implements ICalcView {
     }
 
     @Override
-    public void showErrorInHistory(String errorMessage) {
-        if (stackDisplay != null) {
-            stackDisplay.setText("Erreur : " + errorMessage);
-        } else {
-            System.out.println("Erreur : " + errorMessage); 
-        }
+    public void showErrorInHistory(String errorMessage) { //Affichage des erreurs
+    	stackDisplay.setText("Erreur : " + errorMessage);
     }
 
     @Override
-    public void setController(ICalcController controller) {
+    public void setController(ICalcController controller) { // utile a l'initialisation
         this.controller = controller;
     }
 

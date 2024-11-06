@@ -9,7 +9,7 @@ public class Calc {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Choix entre affichage graphique ou console
+      //choix entre afffichage graphique ou console (while -> force a faire un choix valide) 
         while (true) {
             System.out.println("Choisissez votre mode : ");
             System.out.println("1 - Console");
@@ -31,7 +31,7 @@ public class Calc {
         scanner.close();
     }
 
-    // Démarrage du mode Console
+ // Affichage console
     private static void launchConsoleMode() {
         ICalcModel model = new CalcModel();
         ICalcController controller = new CalcController(model);
@@ -41,22 +41,23 @@ public class Calc {
         while (true) {
             System.out.print("Entrez une commande (push, +, -, *, /, clear, drop, swap, quit): ");
             String input = scanner.next();
-            scanner.useLocale(Locale.US);
+            scanner.useLocale(Locale.US); // On pose ca pour utiliser le point a la place de la virgule (homogénise le tout)
 
             try {
                 switch (input) {
                     case "push":
                         double value = 0;
                         boolean validInput = false;
-
+                        
+                        // On check qu'on rentre bien un nb
                         while (!validInput) {
                             System.out.print("Entrez un nombre : ");
                             try {
                                 value = scanner.nextDouble();
-                                validInput = true;
+                                validInput = true;//C'est un nb -> on sort
                             } catch (InputMismatchException e) {
                                 System.out.println("Erreur : vous devez entrer un nombre valide.");
-                                scanner.next();
+                                scanner.next(); //C'est pas un nb on retente
                             }
                         }
                         controller.handlePush(value);
@@ -90,18 +91,17 @@ public class Calc {
                 }
                 System.out.println("Pile actuelle : " + model.getStack());
             } catch (IllegalStateException | ArithmeticException e) {
-                System.out.println("Erreur : " + e.getMessage());
+                System.out.println("Erreur : " + e.getMessage()); //affichage des error
             }
         }
     }
 
-    // Démarrage du mode JavaFX (Graphique)
+    // Affichage graphique
     private static void launchJavaFXMode() {
-        // Créez le modèle et le contrôleur ici
-        ICalcModel model = new CalcModel(); // Remplacez par votre implémentation du modèle
+        // Modèle + Controlleur
+        ICalcModel model = new CalcModel(); 
         CalcController controller = new CalcController(model);
 
-        // Démarrez l'application JavaFX
         CalcView.startApplication(controller);
     }
 }

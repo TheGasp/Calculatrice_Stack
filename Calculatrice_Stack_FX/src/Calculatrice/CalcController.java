@@ -3,11 +3,12 @@ package Calculatrice;
 public class CalcController implements ICalcController {
     private final ICalcModel model;
 
-    public CalcController(ICalcModel model) {
+    public CalcController(ICalcModel model) { //Constructeur
         this.model = model;
-        this.model.setOnStackChanged(this::notifyStackChange); // Configure un rappel pour les changements de pile
+        this.model.setOnPileChanged(this::notifPileChanged); // CallBack -> changement de la pile
     }
 
+    //Gestion des actions pour chaque handleur
     @Override
     public void handlePush(double value) {
         model.push(value);
@@ -49,12 +50,12 @@ public class CalcController implements ICalcController {
     }
 
     @Override
-    public ICalcModel getModel() {
+    public ICalcModel getModel() { // acces au modèle
         return model;
     }
 
-    // Méthode pour notifier des changements de pile
-    private void notifyStackChange() {
-        // Cette méthode peut rester vide car c'est `CalcView` qui observe les changements
+    // Méthode qui gere le chgmt de pile
+    private void notifPileChanged() {
+        //Vide car c'est la view qui s'en occupe
     }
 }

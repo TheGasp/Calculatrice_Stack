@@ -10,7 +10,6 @@ public interface ICalcController {
     void handleDrop();
     void handleSwap();
 
-    // Méthode pour accéder au modèle (pour récupérer la pile dans la vue)
     ICalcModel getModel();
 }
 
