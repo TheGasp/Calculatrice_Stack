@@ -2,19 +2,17 @@ package Calculatrice;
 
 import java.util.Stack;
 
-public class CalcModel {
-    private Stack<Double> stack;
+public class CalcModel implements ICalcModel {
+    private Stack<Double> stack = new Stack<>();
+    private Runnable onStackChanged;
 
-    public CalcModel() {
-        stack = new Stack<>(); //On crée une pile
-    }
-
-    // Empiler une valeur (encapsulation)
+    @Override
     public void push(double value) {
         stack.push(value);
+        notifyStackChanged();
     }
 
-    // Récupérer la valeur du sommet de la pile
+    @Override
     public double pop() {
         if (stack.isEmpty()) {
             throw new IllegalStateException("La pile est vide");
@@ -22,7 +20,7 @@ public class CalcModel {
         return stack.pop();
     }
 
-    // Addition
+    @Override
     public void add() {
         checkStackSize(2);
         double b = pop();
@@ -30,7 +28,7 @@ public class CalcModel {
         push(a + b);
     }
 
-    // Soustraction
+    @Override
     public void subtract() {
         checkStackSize(2);
         double b = pop();
@@ -38,7 +36,7 @@ public class CalcModel {
         push(a - b);
     }
 
-    // Multiplication
+    @Override
     public void multiply() {
         checkStackSize(2);
         double b = pop();
@@ -46,51 +44,63 @@ public class CalcModel {
         push(a * b);
     }
 
-    // Division
+    @Override
     public void divide() {
         checkStackSize(2);
         double b = pop();
         double a = pop();
         if (b == 0) {
-        	push(a);
-        	push(b); //SI on peut pas div on remet les nb
-        	
-            throw new ArithmeticException("Division par zéro"); //Le throw stop la suite
+            push(a);
+            push(b);
+            throw new ArithmeticException("Division par zéro");
         }
         push(a / b);
     }
 
-    // Vider la pile
+    @Override
     public void clear() {
         stack.clear();
+        notifyStackChanged();
     }
 
-    // Drop
+    @Override
     public void drop() {
         if (stack.isEmpty()) {
             throw new IllegalStateException("La pile est vide, impossible de supprimer.");
         }
-        stack.pop();
+        pop();
+        notifyStackChanged();
     }
 
-    // Swap (des deux denières valeurs)
+    @Override
     public void swap() {
         checkStackSize(2);
         double top1 = pop();
         double top2 = pop();
         push(top1);
         push(top2);
+        notifyStackChanged();
     }
 
-    // Vérifier la taille de la pile
+    @Override
+    public Stack<Double> getStack() {
+        return stack;
+    }
+
+    @Override
+    public void setOnStackChanged(Runnable callback) {
+        this.onStackChanged = callback;
+    }
+
+    private void notifyStackChanged() {
+        if (onStackChanged != null) {
+            onStackChanged.run();
+        }
+    }
+
     private void checkStackSize(int size) {
         if (stack.size() < size) {
             throw new IllegalStateException("Pas assez de nombres sur la pile");
         }
-    }
-
-    // Getteur de la pile
-    public Stack<Double> getStack() {
-        return stack;
     }
 }

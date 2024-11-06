@@ -1,48 +1,47 @@
 package Calculatrice;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class Calc {
-	
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-	    //choix entre afffichage graphique ou console (while -> force a faire un choix valide) 
-	    while (true) {
-	        System.out.println("Choisissez votre mode : ");
-	        System.out.println("1 - Console");
-	        System.out.println("2 - Graphique");
-	        String choix = scanner.nextLine();
-	
-	        if (choix.equals("1")) {
-	            // Console
-	            launchConsoleMode();
-	            break;
-	        } else if (choix.equals("2")) {
-	            // Affichage graphique
-	            launchJavaFXMode();
-	            break;
-	        } else {
-	            System.out.println("Choix invalide");
-	        }
-	    }
-	
-	    scanner.close();
+        // Choix entre affichage graphique ou console
+        while (true) {
+            System.out.println("Choisissez votre mode : ");
+            System.out.println("1 - Console");
+            System.out.println("2 - Graphique");
+            String choix = scanner.nextLine();
+
+            if (choix.equals("1")) {
+                // Mode Console
+                launchConsoleMode();
+                break;
+            } else if (choix.equals("2")) {
+                // Mode Graphique
+                launchJavaFXMode();
+                break;
+            } else {
+                System.out.println("Choix invalide, veuillez entrer 1 ou 2.");
+            }
+        }
+        scanner.close();
     }
-    
-    // Affichage console
-	private static void launchConsoleMode() {
-        CalcModel model = new CalcModel();
-        CalcController controller = new CalcController(model);
+
+    // Démarrage du mode Console
+    private static void launchConsoleMode() {
+        ICalcModel model = new CalcModel();
+        ICalcController controller = new CalcController(model);
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Calculatrice de Sami et Gaspard");
         while (true) {
             System.out.print("Entrez une commande (push, +, -, *, /, clear, drop, swap, quit): ");
             String input = scanner.next();
-            scanner.useLocale(Locale.US); // On pose ca pour utiliser le point a la place de la virgule (homogénise le tout)
+            scanner.useLocale(Locale.US);
 
             try {
                 switch (input) {
@@ -50,15 +49,14 @@ public class Calc {
                         double value = 0;
                         boolean validInput = false;
 
-                        // On check qu'on rentre bien un nb
                         while (!validInput) {
                             System.out.print("Entrez un nombre : ");
                             try {
                                 value = scanner.nextDouble();
-                                validInput = true;  //C'est un nb -> on sort
+                                validInput = true;
                             } catch (InputMismatchException e) {
                                 System.out.println("Erreur : vous devez entrer un nombre valide.");
-                                scanner.next(); //C'est pas un nb on retente
+                                scanner.next();
                             }
                         }
                         controller.handlePush(value);
@@ -90,19 +88,20 @@ public class Calc {
                     default:
                         System.out.println("Commande inconnue.");
                 }
-            } catch (IllegalStateException e) {
-                // Pas assez de nb dans la liste
-                System.out.println("Erreur : " + e.getMessage());
-			} catch (ArithmeticException e) {
-                // Division par 0 
+                System.out.println("Pile actuelle : " + model.getStack());
+            } catch (IllegalStateException | ArithmeticException e) {
                 System.out.println("Erreur : " + e.getMessage());
             }
-        } 
+        }
     }
 
-	// Affichage graphique
-	private static void launchJavaFXMode() {
-	    CalcView.launch(CalcView.class);
-	}
-}
+    // Démarrage du mode JavaFX (Graphique)
+    private static void launchJavaFXMode() {
+        // Créez le modèle et le contrôleur ici
+        ICalcModel model = new CalcModel(); // Remplacez par votre implémentation du modèle
+        CalcController controller = new CalcController(model);
 
+        // Démarrez l'application JavaFX
+        CalcView.startApplication(controller);
+    }
+}

@@ -1,62 +1,60 @@
 package Calculatrice;
 
-public class CalcController {
-    private CalcModel model;
-    //Gestion des actions pour chaque handleur
+public class CalcController implements ICalcController {
+    private final ICalcModel model;
 
-    public CalcController(CalcModel model) {
+    public CalcController(ICalcModel model) {
         this.model = model;
+        this.model.setOnStackChanged(this::notifyStackChange); // Configure un rappel pour les changements de pile
     }
 
+    @Override
     public void handlePush(double value) {
         model.push(value);
-        displayStack();
     }
 
+    @Override
     public void handleAdd() {
         model.add();
-        displayStack();
     }
 
+    @Override
     public void handleSubtract() {
         model.subtract();
-        displayStack();
     }
 
+    @Override
     public void handleMultiply() {
         model.multiply();
-        displayStack();
     }
 
+    @Override
     public void handleDivide() {
         model.divide();
-        displayStack();
     }
 
+    @Override
     public void handleClear() {
         model.clear();
-        displayStack();
     }
 
+    @Override
     public void handleDrop() {
         model.drop();
-        displayStack();
     }
 
+    @Override
     public void handleSwap() {
         model.swap();
-        displayStack();
     }
 
-    // Affichage (en mode console)
-    private void displayStack() {
-        System.out.println("Pile actuelle : " + model.getStack());
-    }
-
-    // Getteur du model
-    public CalcModel getModel() {
+    @Override
+    public ICalcModel getModel() {
         return model;
     }
+
+    // Méthode pour notifier des changements de pile
+    private void notifyStackChange() {
+        // Cette méthode peut rester vide car c'est `CalcView` qui observe les changements
+    }
 }
-
-
