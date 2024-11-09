@@ -1,0 +1,10 @@
+Ce fichier contient les instructions pour lancer le fichier JAR (exécutable) :
+
+-> L'exécutable est parfaitement fonctionnel mais ne peut être lancé que par une commande (le double-clic ne fonctionne pas).
+-> Il est nécessaire de posséder une version récente de Java (cela ne fonctionnera pas avec la version 8) ainsi qu'une version récente de JavaFX installées sur l'ordinateur.
+-> La commande à exécuter pour le lancement est : 
+  java --module-path "path\to\javafx\lib" --add-modules javafx.controls,javafx.fxml -jar path\to\fichier\Calculatrice_Sami_Gaspard.jar
+
+Cordialement,  
+Gaspard Langlais  
+Sami Ait Bella
